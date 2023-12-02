@@ -18,11 +18,10 @@ docker compose up -d --build
 docker compose run --rm composer create-project laravel/laravel .
 ```
 
-3. Next, run the following commands (to prevent permissions issues):
+3. Next, run the following command (to prevent permissions issues):
 
 ```
-docker compose run --rm php /bin/sh
-chown -R laravel:laravel /var/www/html
+docker-compose run --rm php /bin/sh -c "chown -R laravel:laravel /var/www/html"
 ```
 
 And you're all done!
