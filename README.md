@@ -1,6 +1,6 @@
 # docker-laravel
 
-This is a framework for building a laravel app within Docker.
+This is a framework for building a laravel app within Docker. The Dockerfile builds from a slimline PHP 8.2 Alpine image and includes nginx, php, mysql and phpmyadmin for a sane development environment. You may want to edit the various config files inside the `docker` directory and docker-compose.yml.
 
 Run docker and build:
 
@@ -25,6 +25,8 @@ and then -
 ```
 chown -R laravel:laravel /var/www/html
 ```
+
+To access PHPMyAdmin, go to `http://localhost:3307`
 
 To enter the CLI for your docker container at any time, run:
 ```
