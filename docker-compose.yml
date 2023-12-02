@@ -15,8 +15,8 @@ services:
             - mysql
         container_name: nginx
         ports:
-            - 80:80
-            - 443:443
+            - "${HTTP_PORT}:80"
+            - "${HTTP_PORT_SSL}:443"
         volumes:
             - ./laravel:/var/www/html
         networks:
@@ -36,14 +36,14 @@ services:
         image: mysql:8.0.27
         container_name: mysql
         ports:
-            - 3306:3306
+            - "${MYSQL_PORT}:3306"
         volumes:
             - ./docker/mysql:/var/lib/mysql
         environment:
-            MYSQL_DATABASE: laraveldb
-            MYSQL_USER: laravel
-            MYSQL_PASSWORD: secret
-            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         networks:
             - laravel
 
@@ -53,7 +53,7 @@ services:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
         ports:
-            - "3307:80"
+            - "${PHPMYADMIN_PORT}:80"
         volumes:
             - ./docker/mysql:/var/lib/mysql
         environment:
