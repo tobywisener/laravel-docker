@@ -8,12 +8,6 @@ Run docker and build:
 docker compose up -d --build
 ```
 
-Run command line in container:
-
-```
-docker compose run --rm php /bin/sh
-```
-
 Create laravel project via composer:
 
 ```
@@ -30,4 +24,9 @@ and then -
 
 ```
 chown -R laravel:laravel /var/www/html
+```
+
+To enter the CLI for your docker container at any time, run:
+```
+docker compose run --rm php /bin/sh
 ```
