@@ -15,7 +15,7 @@ docker compose up -d --build
 2. Create laravel project via composer:
 
 ```
-docker compose run --rm composer create-project laravel/laravel laravel
+docker compose run --rm composer create-project laravel/laravel .
 ```
 
 3. Next, run the following commands (to prevent permissions issues):
