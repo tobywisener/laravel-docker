@@ -1,0 +1,96 @@
+version: "3.9"
+
+networks:
+    laravel:
+        name: laravel
+
+services:
+
+    nginx:
+        build:
+            context: ./docker
+            dockerfile: nginx.dockerfile
+        depends_on:
+            - php
+            - mysql
+        container_name: nginx
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./laravel:/var/www/html
+        networks:
+            - laravel
+
+    php:
+        build:
+            context: ./docker
+            dockerfile: php.dockerfile
+        container_name: php
+        volumes:
+            - ./laravel:/var/www/html
+        networks:
+            - laravel
+
+    mysql:
+        image: mysql:8.0.27
+        container_name: mysql
+        ports:
+            - 3306:3306
+        volumes:
+            - ./docker/mysql:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: laraveldb
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: secret
+        networks:
+            - laravel
+
+    phpmyadmin:
+        depends_on:
+            - mysql
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        ports:
+            - "3307:80"
+        volumes:
+            - ./docker/mysql:/var/lib/mysql
+        environment:
+            PMA_ARBITRARY: 0
+            PMA_HOST: mysql
+            MYSQL_USERNAME: laravel
+            MYSQL_ROOT_PASSWORD: secret
+        networks:
+            - laravel
+
+    composer:
+        image: composer:latest
+        container_name: composer
+        volumes:
+            - ./laravel:/var/www/html
+        working_dir: /var/www/html
+        networks:
+            - laravel
+
+    artisan:
+        build:
+            context: ./docker
+            dockerfile: php.dockerfile
+        container_name: artisan
+        volumes:
+            - ./laravel:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ['php', 'artisan']
+        networks:
+            - laravel
+
+    npm:
+        image: node:current-alpine
+        container_name: npm
+        volumes:
+            - ./laravel:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ['npm']
+        networks:
+            - laravel
